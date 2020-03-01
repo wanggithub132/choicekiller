@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/common_dialog_layout"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/common_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:visibility="gone"
+
+        />
+
+    <FrameLayout
+        android:id="@+id/common_dialog_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/common_dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:textColor="#000000"
+        android:textSize="14dp"
+
+        />
+
+    <LinearLayout
+        android:id="@+id/common_dialog_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/common_dialog_negitive_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="7.5dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/common_dialog_negitive_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/common_dialog_positive_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="7.5dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/common_dialog_positive_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
