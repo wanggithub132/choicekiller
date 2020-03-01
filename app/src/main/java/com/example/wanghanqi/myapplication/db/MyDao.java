@@ -3,6 +3,7 @@ package com.example.wanghanqi.myapplication.db;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
@@ -23,4 +24,7 @@ public interface MyDao {
 
     @Update
     void updateItem(ChoiceBean bean);
+
+    @Query("select * from whq_table where title = :idkey")
+    ChoiceBean findBeanById(String idkey);
 }

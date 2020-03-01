@@ -14,14 +14,8 @@ import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.db.MyDb;
 import com.example.wanghanqi.myapplication.fragment.HomeFragment;
-import com.example.wanghanqi.myapplication.sp.SharedPreferenceManager;
-import com.example.wanghanqi.myapplication.sp.SpConstance;
+import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 
@@ -106,19 +100,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                     }
                     VLog.d("回传数据", mData.toString());
                     //数据保存
-                    MyDb.getsInstance().getMyDao().inster(mData);
-                    String a = SharedPreferenceManager.getsInstance().getString(SpConstance.HISTORY_CHOICE_LIST);
-                    Gson gosn = new Gson();
-                    List<ChoiceBean> choiceBeans = gosn.fromJson(a, TypeToken.getParameterized(List.class, ChoiceBean.class).getType());
-                    if (choiceBeans == null) {
-                        choiceBeans = new ArrayList<>();
-                    }
-                    choiceBeans.add(mData);
-                    SharedPreferenceManager.getsInstance().pusString(SpConstance.HISTORY_CHOICE_LIST, gosn.toJson(choiceBeans));
-                    //数据回传
+                    ThreadUtils.getsInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            MyDb.getsInstance().getMyDao().inster(mData);
+                        }
+                    });
+
                     Intent i = new Intent();
-                    Gson gson = new Gson();
-                    i.putExtra(AddActivity.RESULT_FLAG, gson.toJson(mData));
+
+                    i.putExtra(AddActivity.RESULT_FLAG, mData.getTitle());
                     mActivity.setResult(HomeFragment.ADD_ACTIVITY_RESULT, i);
                     mActivity.finish();
                 }

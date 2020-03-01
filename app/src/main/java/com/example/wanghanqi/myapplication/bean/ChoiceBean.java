@@ -64,6 +64,9 @@ public class ChoiceBean {
 
 
     public List<String> getmChoiceList() {
+        if(mChoiceList == null){
+            mChoiceList = new ArrayList<String>();
+        }
         return mChoiceList;
     }
 
@@ -96,8 +99,10 @@ public class ChoiceBean {
     @Override
     public String toString() {
         return "ChoiceBean{" +
-                "mTitle='" + mTitle + '\'' +
+                "mId=" + mId +
+                ", mType=" + mType +
+                ", mTitle='" + mTitle + '\'' +
+                ", mChoiceList=" + mChoiceList +
                 '}';
     }
-
 }
