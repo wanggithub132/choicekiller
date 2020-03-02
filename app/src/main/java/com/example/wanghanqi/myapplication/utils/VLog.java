@@ -9,6 +9,11 @@ import android.util.Log;
 public class VLog {
     private static final String TAG = "WHQ_";
 
+
+    public static void d(String msg){
+        d("",msg);
+    }
+
     public static void d(String tag, String msg) {
         Log.d(TAG + tag, msg);
     }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.wanghanqi.myapplication.AddActivity;
 import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
+import com.example.wanghanqi.myapplication.db.DbManager;
 import com.example.wanghanqi.myapplication.db.MyDb;
 import com.example.wanghanqi.myapplication.fragment.HomeFragment;
 import com.example.wanghanqi.myapplication.utils.ThreadUtils;
@@ -103,7 +104,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                     ThreadUtils.getsInstance().execute(new Runnable() {
                         @Override
                         public void run() {
-                            MyDb.getsInstance().getMyDao().inster(mData);
+                            DbManager.getsInstance().inster(mData);
                         }
                     });
 

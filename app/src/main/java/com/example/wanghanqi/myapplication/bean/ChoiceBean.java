@@ -18,7 +18,8 @@ import java.util.List;
  */
 @Entity(tableName = DbConstance.TABLE_NAME)
 public class ChoiceBean {
-
+    public ChoiceBean() {
+    }
 
     //主键id
     @PrimaryKey(autoGenerate = true)
@@ -37,6 +38,18 @@ public class ChoiceBean {
     @TypeConverters(MyConverter.class)
     @ColumnInfo(name = "choice_list")
     public List<String> mChoiceList;
+
+    //最后一次编辑时间
+    @ColumnInfo(name = "end_time")
+    public long mEndTime;
+
+    public long getEndTime() {
+        return mEndTime;
+    }
+
+    public void setEndTime(long mEndTime) {
+        this.mEndTime = mEndTime;
+    }
 
     public String getTitle() {
         return mTitle;
@@ -64,7 +77,7 @@ public class ChoiceBean {
 
 
     public List<String> getmChoiceList() {
-        if(mChoiceList == null){
+        if (mChoiceList == null) {
             mChoiceList = new ArrayList<String>();
         }
         return mChoiceList;

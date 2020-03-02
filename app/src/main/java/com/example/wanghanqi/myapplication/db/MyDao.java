@@ -8,6 +8,8 @@ import android.arch.persistence.room.Update;
 
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 
+import java.util.List;
+
 /**
  * Created by wanghanqi on 2020/2/22.
  */
@@ -25,6 +27,21 @@ public interface MyDao {
     @Update
     void updateItem(ChoiceBean bean);
 
+
+
+    //根据title查找
     @Query("select * from whq_table where title = :idkey")
     ChoiceBean findBeanById(String idkey);
+
+    //查找历史记录信息
+    @Query("select * from whq_table where type = 1")
+    List<ChoiceBean> findHistoryBean();
+
+    //查找内置数据
+    @Query("select * from whq_table where type = 0")
+    List<ChoiceBean> findOriginalBean();
+
+//    //查找最近一次改动过的数据
+//    @Query("select * from whq_table where end_time is ")
+//    ChoiceBean findLatestBean();
 }

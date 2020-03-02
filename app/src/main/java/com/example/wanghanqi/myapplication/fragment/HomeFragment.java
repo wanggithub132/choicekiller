@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,16 @@ import com.example.wanghanqi.myapplication.AddActivity;
 import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.bean.Constance;
+import com.example.wanghanqi.myapplication.db.DbManager;
+import com.example.wanghanqi.myapplication.db.MyDao;
 import com.example.wanghanqi.myapplication.db.MyDb;
 import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
 import com.example.wanghanqi.myapplication.widget.LuckPan;
 import com.example.wanghanqi.myapplication.widget.LuckPanAnimEndCallBack;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * Created by wanghanqi on 2020/2/8.
@@ -51,6 +56,21 @@ public class HomeFragment extends BaseFragment {
         //读取内置数据
 
         //读取历史数据
+        ThreadUtils.getsInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<ChoiceBean> historyList = DbManager.getsInstance().findHistoryBean();
+                VLog.d("1111");
+                if(historyList == null||historyList.size()<=0){
+                    VLog.d("222");
+                }else{
+                    for(ChoiceBean b :historyList)
+                    VLog.d( b.toString());
+                }
+
+            }
+        });
+
 
         //显示最后一次数据的转盘
         mEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +123,7 @@ public class HomeFragment extends BaseFragment {
                 ThreadUtils.getsInstance().execute(new Runnable() {
                     @Override
                     public void run() {
-                        final ChoiceBean bean = MyDb.getsInstance().getMyDao().findBeanById(idRresult);
+                        final ChoiceBean bean = DbManager.getsInstance().findBeanById(idRresult);
                         VLog.d("",bean.toString());
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
@@ -123,7 +143,7 @@ public class HomeFragment extends BaseFragment {
             ThreadUtils.getsInstance().execute(new Runnable() {
                 @Override
                 public void run() {
-                    final ChoiceBean bean = MyDb.getsInstance().getMyDao().findBeanById(mChoiceBean.getTitle());
+                    final ChoiceBean bean = DbManager.getsInstance().findBeanById(mChoiceBean.getTitle());
                     VLog.d("",bean.toString());
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
