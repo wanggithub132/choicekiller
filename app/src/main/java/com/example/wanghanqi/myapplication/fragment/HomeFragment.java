@@ -68,6 +68,11 @@ public class HomeFragment extends BaseFragment {
                     VLog.d( b.toString());
                 }
 
+                ChoiceBean latest = DbManager.getsInstance().findLatestBean();
+                if(latest!= null) {
+                    VLog.d("latest" + latest.toString());
+                }
+
             }
         });
 

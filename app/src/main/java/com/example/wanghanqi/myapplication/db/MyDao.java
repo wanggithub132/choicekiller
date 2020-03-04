@@ -42,6 +42,9 @@ public interface MyDao {
     List<ChoiceBean> findOriginalBean();
 
 //    //查找最近一次改动过的数据
-//    @Query("select * from whq_table where end_time is ")
-//    ChoiceBean findLatestBean();
+    @Query("select * from whq_table order by  end_time desc limit 1 offset 0")
+    ChoiceBean findLatestBean();
+    //删除仅保留10条id最大的内容
+    @Query("delete from whq_table where id not in (select id from whq_table order by id desc limit 10) ")
+    void deleteWhenInsert();
 }

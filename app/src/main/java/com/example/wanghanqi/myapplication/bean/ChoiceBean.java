@@ -23,6 +23,7 @@ public class ChoiceBean {
 
     //主键id
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     public int mId;
 
     //转盘数据类型  0 内置数据  1 本地数据

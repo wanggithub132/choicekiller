@@ -20,6 +20,7 @@ public class DbManager {
     public void inster(ChoiceBean bean) {
         bean.setEndTime(System.currentTimeMillis());
         mDao.inster(bean);
+        mDao.deleteWhenInsert();
     }
 
     public void deletItem(ChoiceBean bean) {
@@ -38,5 +39,9 @@ public class DbManager {
 
     public List<ChoiceBean> findHistoryBean() {
         return mDao.findHistoryBean();
+    }
+
+    public ChoiceBean findLatestBean(){
+        return mDao.findLatestBean();
     }
 }
