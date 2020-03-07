@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.recycleview.RecycleViewAdapter;
@@ -22,6 +21,8 @@ public class AddActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private RecycleViewAdapter mAdapter;
 
+    private int mType; //0新增数据 1 编辑数据
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +37,11 @@ public class AddActivity extends BaseActivity {
             //新增功能
             choiceBean = new ChoiceBean();
             choiceBean.setmType(1);
+            mType =0;
 
         }else{
             //编辑功能
+            mType = 1;
         }
 
         mRecyclerView = findViewById(R.id.recycleview);
@@ -46,7 +49,7 @@ public class AddActivity extends BaseActivity {
         mAdapter = new RecycleViewAdapter(this);
 
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setData(choiceBean);
+        mAdapter.setData(choiceBean,mType);
 
 
 

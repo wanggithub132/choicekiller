@@ -14,8 +14,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
+import com.example.wanghanqi.myapplication.utils.VLog;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @ProjectName: LuckPan
@@ -46,6 +48,10 @@ public class LuckPan extends View {
     private float mTextSize = 20;//文字大小
     private ObjectAnimator objectAnimator;
     private LuckPanAnimEndCallBack luckPanAnimEndCallBack;
+    private Random random;
+
+    private String paintColor = "#ED2F2F"; //文字颜色
+    private String panCloor = "#F8864A" ; //转盘颜色
 
     public LuckPanAnimEndCallBack getLuckPanAnimEndCallBack() {
         return luckPanAnimEndCallBack;
@@ -76,11 +82,12 @@ public class LuckPan extends View {
         mPaintArc.setStyle(Paint.Style.FILL);
 
         mPaintItemStr = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintItemStr.setColor(Color.parseColor("#ED2F2F"));
+        mPaintItemStr.setColor(Color.parseColor(paintColor));
         mPaintItemStr.setStrokeWidth(3);
         mPaintItemStr.setTextAlign(Paint.Align.CENTER);
 
         mArcPaths = new ArrayList<>();
+        random = new Random();
     }
 
     /**
@@ -94,15 +101,11 @@ public class LuckPan extends View {
         mOffsetAngle = 360/items.getmChoiceList().size()/2;
         invalidate();
     }
-    /**
-     * 设置转盘数据
-     */
-    public void setLuckNumber(int luckNumber){
-        mLuckNum = luckNumber;
-    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        VLog.d("onSizeChanged");
         mRadius = Math.min(w,h)/2*0.9f;
         //这里是将（0，0）点作为圆心
         rectFPan = new RectF(-mRadius,-mRadius,mRadius,mRadius);
@@ -117,7 +120,7 @@ public class LuckPan extends View {
         mOffsetAngle = mItemAnge/2;
     }
     public void startAnim(){
-//        mLuckNum = random.nextInt( mItemStrs.length);//随机生成结束位置
+        mLuckNum = random.nextInt( mItemStrs.mChoiceList.size());//随机生成结束位置
         if(objectAnimator!=null){
             objectAnimator.cancel();
         }
@@ -139,6 +142,7 @@ public class LuckPan extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        VLog.d("onDraw");
         canvas.translate(getWidth()/2,getHeight()/2);//画布中心点设置为（0，0）
         canvas.rotate(-90-mOffsetAngle);
         drawPanItem(canvas);
@@ -160,7 +164,7 @@ public class LuckPan extends View {
                 mPaintArc.setColor(Color.WHITE);
             }else {
                 //偶数
-                mPaintArc.setColor(Color.parseColor("#F8864A"));
+                mPaintArc.setColor(Color.parseColor(panCloor));
             }
             Path path = new Path();
             path.addArc(rectFStr,startAng,mItemAnge);//文字的路径圆形比盘的小

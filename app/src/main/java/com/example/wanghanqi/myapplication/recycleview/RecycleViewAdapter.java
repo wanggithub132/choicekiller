@@ -13,7 +13,6 @@ import com.example.wanghanqi.myapplication.AddActivity;
 import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.db.DbManager;
-import com.example.wanghanqi.myapplication.db.MyDb;
 import com.example.wanghanqi.myapplication.fragment.HomeFragment;
 import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
@@ -29,6 +28,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
     private static final int CONTENT_TYPE = 2;
     private static final int FOOTER_TYPE = 3;
     private Activity mActivity;
+
+    private int mType;
 
     private ChoiceBean mData = new ChoiceBean();
 
@@ -46,11 +47,12 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
         }
     };
 
-    public void setData(ChoiceBean bean) {
+    public void setData(ChoiceBean bean,int type) {
         if (bean == null) {
             bean = new ChoiceBean();
         }
         mData = bean;
+        mType = type;
         notifyDataSetChanged();
     }
 
@@ -104,12 +106,18 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                     ThreadUtils.getsInstance().execute(new Runnable() {
                         @Override
                         public void run() {
-                            DbManager.getsInstance().inster(mData);
+                            //来自新增的数据
+                            if(mType ==0) {
+                                DbManager.getsInstance().inster(mData);
+                            }
+                            //来自编辑的数据
+                            if(mType ==1) {
+                                DbManager.getsInstance().updateItem(mData);
+                            }
                         }
                     });
 
                     Intent i = new Intent();
-
                     i.putExtra(AddActivity.RESULT_FLAG, mData.getTitle());
                     mActivity.setResult(HomeFragment.ADD_ACTIVITY_RESULT, i);
                     mActivity.finish();
