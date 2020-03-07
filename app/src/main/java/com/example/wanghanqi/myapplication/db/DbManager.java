@@ -44,4 +44,8 @@ public class DbManager {
     public ChoiceBean findLatestBean(){
         return mDao.findLatestBean();
     }
+
+    public void deleteAll(){
+        mDao.deleteAll();
+    }
 }

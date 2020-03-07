@@ -43,4 +43,8 @@ public class SettingView extends LinearLayout {
     public void setClickListener(OnClickListener listener){
         mBtn.setOnClickListener(listener);
     }
+
+    public void setIcon(int drawable) {
+        mBtn.setImageDrawable(getResources().getDrawable(drawable));
+    }
 }

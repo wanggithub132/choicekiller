@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.wanghanqi.myapplication.AddActivity;
@@ -180,7 +181,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
      */
     static class TitleHolder extends RecyclerView.ViewHolder {
         private EditText mTitle;
-        private Button mAddBtn;
+        private ImageView mAddBtn;
         private Button mEditBtn;
 
         public TitleHolder(View itemView, View.OnClickListener listener, final OnEditListenrt editListenrt) {
@@ -226,7 +227,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
     static class ContentHolder extends RecyclerView.ViewHolder {
         private EditText mContent;
         private Button mEditBtn;
-        private Button mDelBtn;
+        private ImageView mDelBtn;
 
         private OnDelClickListener mDelListener;
         private OnEditListenrt mEditListener;

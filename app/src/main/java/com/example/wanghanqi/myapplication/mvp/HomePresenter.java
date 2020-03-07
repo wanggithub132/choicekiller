@@ -3,6 +3,7 @@ package com.example.wanghanqi.myapplication.mvp;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.bean.Constance;
 import com.example.wanghanqi.myapplication.db.DbManager;
+import com.example.wanghanqi.myapplication.utils.MainThreadUtils;
 import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
 
@@ -23,18 +24,28 @@ public class HomePresenter implements HomeConstant.Presenter {
         ThreadUtils.getsInstance().execute(new Runnable() {
             @Override
             public void run() {
-                List<ChoiceBean> historyList = DbManager.getsInstance().findHistoryBean();
+                final List<ChoiceBean> historyList = DbManager.getsInstance().findHistoryBean();
                 VLog.d("1111");
                 if (historyList == null || historyList.size() <= 0) {
                     VLog.d("222");
                 } else {
                     for (ChoiceBean b : historyList)
                         VLog.d(b.toString());
+
+                    MainThreadUtils.postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mView != null) {
+                                mView.updateHistoryList(historyList);
+                            }
+                        }
+                    });
+
                 }
 
-                if (mView != null) {
-                    mView.updateHistoryList(historyList);
-                }
+
+
+
 
             }
         });
@@ -53,9 +64,17 @@ public class HomePresenter implements HomeConstant.Presenter {
                 }else{
                     latest = Constance.sFoodBean;
                 }
-                if (mView != null) {
-                    mView.updateLatestList(latest);
-                }
+                final ChoiceBean finalLatest = latest;
+//                MainThreadUtils.postMainThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+                        if (mView != null) {
+                            mView.updateLatestList(finalLatest);
+                        }
+//                    }
+//                });
+
+
 
             }
         });

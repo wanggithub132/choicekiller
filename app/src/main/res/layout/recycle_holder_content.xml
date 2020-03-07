@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,18 +9,26 @@
         android:id="@+id/holder_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_home"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/holder_btn_edit"
+        android:hint="请输入选项"
      />
     <Button
         android:id="@+id/holder_btn_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="编辑"/>
+        android:layout_toStartOf="@+id/holder_btn_del"
+       />
 
-    <Button
+    <ImageView
         android:id="@+id/holder_btn_del"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="删除"/>
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reduce"/>
 
-</LinearLayout>
+
+</RelativeLayout>

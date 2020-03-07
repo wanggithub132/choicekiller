@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
 import com.example.wanghanqi.myapplication.utils.VLog;
 
@@ -33,6 +34,8 @@ import java.util.Random;
  */
 
 public class LuckPan extends View {
+    private Paint mPaintBian;//转盘边线
+
     private Paint mPaintArc;//转盘扇形画笔
     private Paint mPaintItemStr;//转盘文字画笔
     private float mRadius;//圆盘的半径
@@ -41,6 +44,18 @@ public class LuckPan extends View {
     private ChoiceBean mItemStrs = new ChoiceBean();
     private ArrayList<Path> mArcPaths;
     private float mItemAnge;
+
+    public void setAnimalTime(int animalTime) {
+        this.animalTime = animalTime;
+    }
+
+    private int animalTime = 4000; //旋转动画时间，毫秒
+
+    //设置旋转圈数
+    public void setmRepeatCount(int mRepeatCount) {
+        this.mRepeatCount = mRepeatCount;
+    }
+
     private int mRepeatCount = 4;//转几圈
     private int mLuckNum = 2;//最终停止的位置
     private float mStartAngle = 0;//存储圆盘开始的位置
@@ -50,8 +65,9 @@ public class LuckPan extends View {
     private LuckPanAnimEndCallBack luckPanAnimEndCallBack;
     private Random random;
 
-    private String paintColor = "#ED2F2F"; //文字颜色
-    private String panCloor = "#F8864A" ; //转盘颜色
+    private String paintColor = "#707070"; //文字颜色
+//    private String panCloor = "#F8864A" ; //转盘颜色
+    private String panCloor = "#ffffff" ; //转盘颜色
 
     public LuckPanAnimEndCallBack getLuckPanAnimEndCallBack() {
         return luckPanAnimEndCallBack;
@@ -80,6 +96,11 @@ public class LuckPan extends View {
     private void init() {
         mPaintArc = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintArc.setStyle(Paint.Style.FILL);
+
+        mPaintBian = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintBian.setStyle(Paint.Style.STROKE);
+        mPaintBian.setColor(getResources().getColor(R.color.black));
+        mPaintBian.setStrokeWidth(3);
 
         mPaintItemStr = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintItemStr.setColor(Color.parseColor(paintColor));
@@ -126,7 +147,7 @@ public class LuckPan extends View {
         }
         float v = mItemAnge*mLuckNum+mStartAngle%360;//如果转过一次了那下次旋转的角度就需要减去上一次多出的，否则结束的位置会不断增加的
         objectAnimator = ObjectAnimator.ofFloat(this, "rotation", mStartAngle, mStartAngle-mRepeatCount*360-v);
-        objectAnimator.setDuration(4000);
+        objectAnimator.setDuration(animalTime);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -165,11 +186,13 @@ public class LuckPan extends View {
             }else {
                 //偶数
                 mPaintArc.setColor(Color.parseColor(panCloor));
+
             }
             Path path = new Path();
             path.addArc(rectFStr,startAng,mItemAnge);//文字的路径圆形比盘的小
             mArcPaths.add(path);
             canvas.drawArc(rectFPan,startAng,mItemAnge,true,mPaintArc);
+            canvas.drawArc(rectFPan,startAng,mItemAnge,true,mPaintBian);
             startAng+=mItemAnge;
         }
     }

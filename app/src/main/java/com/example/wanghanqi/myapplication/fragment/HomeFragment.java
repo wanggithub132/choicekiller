@@ -123,7 +123,10 @@ public class HomeFragment extends BaseFragment implements HomeConstant.HomeView 
                     @Override
                     public void run() {
                         final ChoiceBean bean = DbManager.getsInstance().findBeanById(idRresult);
-                        VLog.d("", bean.toString());
+
+                        if(bean == null){
+                            return;
+                        }
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

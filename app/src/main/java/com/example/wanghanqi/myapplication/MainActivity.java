@@ -12,6 +12,7 @@ import com.example.wanghanqi.myapplication.fragment.AnswerFragment;
 import com.example.wanghanqi.myapplication.fragment.BaseFragment;
 import com.example.wanghanqi.myapplication.fragment.HomeFragment;
 import com.example.wanghanqi.myapplication.fragment.SettingFragment;
+import com.example.wanghanqi.myapplication.fragment.TwoChoiceFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MainActivity extends BaseActivity {
 
     private void buildFragmentList() {
         BaseFragment homeFragment = new HomeFragment();
-        BaseFragment answerFragment = new AnswerFragment();
+        BaseFragment answerFragment = new TwoChoiceFragment();
         BaseFragment settingFragment = new SettingFragment();
         fragments.add(homeFragment);
         fragments.add(answerFragment);

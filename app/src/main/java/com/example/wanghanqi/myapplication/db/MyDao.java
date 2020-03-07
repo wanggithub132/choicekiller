@@ -27,7 +27,8 @@ public interface MyDao {
     @Update
     void updateItem(ChoiceBean bean);
 
-
+    @Query("delete from whq_table where type = 1")
+    void deleteAll();
 
     //根据title查找
     @Query("select * from whq_table where title = :idkey")
