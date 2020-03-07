@@ -20,6 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/holder_title_btn_add"
+        android:background="@drawable/common_button_selector"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
         android:text="保存"/>
 
     <ImageView

@@ -5,25 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="在你按下的一刻，可能你已经知道结果了" />
-
-
-
-    </LinearLayout>
-
-
-
+        android:layout_marginStart="16dp"
+        android:textSize="20dp"
+        android:text="在你按下的一刻，可能你已经有了答案" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -35,10 +22,24 @@
 
         <ImageView
             android:id="@+id/img_start"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_luckdrawstart" />
+            android:src="@drawable/choice" />
     </RelativeLayout>
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="20dp"
+        android:text="你有什么想问的吗" />
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+       />
 
 </LinearLayout>
