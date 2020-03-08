@@ -66,7 +66,6 @@ public class LuckPan extends View {
     private Random random;
 
     private String paintColor = "#707070"; //文字颜色
-//    private String panCloor = "#F8864A" ; //转盘颜色
     private String panCloor = "#ffffff" ; //转盘颜色
 
     public LuckPanAnimEndCallBack getLuckPanAnimEndCallBack() {
@@ -116,13 +115,27 @@ public class LuckPan extends View {
      * @param items
      */
     public void setItems(ChoiceBean items){
+        if(items==null||!items.isValued()){
+            return;
+        }
+        VLog.d("setItems"+items.toString());
         mItemStrs = items;
         mOffsetAngle=0;
         mStartAngle=0;
         mOffsetAngle = 360/items.getmChoiceList().size()/2;
+        //每一个Item的角度
+        mItemAnge = 360 / mItemStrs.getmChoiceList().size();
         invalidate();
     }
 
+
+    /**
+     * 尺寸变化时重新绘制数据
+     * @param w
+     * @param h
+     * @param oldw
+     * @param oldh
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -131,14 +144,9 @@ public class LuckPan extends View {
         //这里是将（0，0）点作为圆心
         rectFPan = new RectF(-mRadius,-mRadius,mRadius,mRadius);
         rectFStr = new RectF(-mRadius/7*5,-mRadius/7*5,mRadius/7*5,mRadius/7*5);
-        //每一个Item的角度
-        mItemAnge = 360 / mItemStrs.getmChoiceList().size();
         mTextSize = mRadius/9;
+        VLog.d("mTextSize"+mTextSize);
         mPaintItemStr.setTextSize(mTextSize);
-        //数据初始化
-        mOffsetAngle=0;
-        mStartAngle=0;
-        mOffsetAngle = mItemAnge/2;
     }
     public void startAnim(){
         mLuckNum = random.nextInt( mItemStrs.mChoiceList.size());//随机生成结束位置
@@ -164,14 +172,27 @@ public class LuckPan extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         VLog.d("onDraw");
+
         canvas.translate(getWidth()/2,getHeight()/2);//画布中心点设置为（0，0）
         canvas.rotate(-90-mOffsetAngle);
+
+        clearDrawCache();
         drawPanItem(canvas);
         drawText(canvas);
     }
+
+    /**
+     * 画布存在着重绘，因此要清除上次的缓存内容
+     */
+    private void clearDrawCache() {
+        mArcPaths.clear();
+    }
+
     //画文字
     private void drawText(Canvas canvas) {
+        VLog.d("drawText");
         for(int x = 0; x<mItemStrs.getmChoiceList().size(); x++){
+            VLog.d(mItemStrs.getmChoiceList().get(x));
             Path path = mArcPaths.get(x);
             canvas.drawTextOnPath(mItemStrs.getmChoiceList().get(x),path,0,0,mPaintItemStr);
         }

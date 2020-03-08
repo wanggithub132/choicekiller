@@ -24,6 +24,7 @@ import com.example.wanghanqi.myapplication.db.MyDao;
 import com.example.wanghanqi.myapplication.db.MyDb;
 import com.example.wanghanqi.myapplication.mvp.HomeConstant;
 import com.example.wanghanqi.myapplication.mvp.HomePresenter;
+import com.example.wanghanqi.myapplication.utils.DpPxUtils;
 import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
 import com.example.wanghanqi.myapplication.widget.LuckPan;
@@ -148,13 +149,14 @@ public class HomeFragment extends BaseFragment implements HomeConstant.HomeView 
 
         for(final ChoiceBean bean:historyList) {
 
-            TextView view = new TextView(mActivity);
+            Button view = new Button(mActivity);
 
-            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(DpPxUtils.dip2px(mActivity,100), ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(params);
             view.setPadding(15,15,15,15);
             view.setText(bean.getTitle());
-            view.setBackgroundColor(R.color.colorAccent);
+            view.setMaxLines(1);
+            view.setBackground(getResources().getDrawable(R.drawable.common_button_selector));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -119,4 +119,8 @@ public class ChoiceBean {
                 ", mChoiceList=" + mChoiceList +
                 '}';
     }
+
+    public boolean isValued(){
+        return mChoiceList.size()>0;
+    }
 }
