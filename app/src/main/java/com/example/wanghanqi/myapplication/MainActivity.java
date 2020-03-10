@@ -27,9 +27,11 @@ public class MainActivity extends BaseActivity {
 
     private void buildFragmentList() {
         BaseFragment homeFragment = new HomeFragment();
-        BaseFragment answerFragment = new TwoChoiceFragment();
+        BaseFragment answerFragment = new AnswerFragment();
+        BaseFragment twoChoiceFragment = new TwoChoiceFragment();
         BaseFragment settingFragment = new SettingFragment();
         fragments.add(homeFragment);
+        fragments.add(twoChoiceFragment);
         fragments.add(answerFragment);
         fragments.add(settingFragment);
     }
@@ -68,8 +70,11 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_dashboard:
                     switchFragment(1, "");
                     return true;
+                case R.id.navigation_two:
+                    switchFragment(2,"");
+                    return true;
                 case R.id.navigation_notifications:
-                    switchFragment(2, "");
+                    switchFragment(3, "");
                     return true;
             }
             return false;

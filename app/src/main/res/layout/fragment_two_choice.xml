@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="18dp"
-        android:text="在你按下的一刻，可能你已经有了答案" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,19 +22,6 @@
             android:src="@drawable/choice" />
     </RelativeLayout>
 
-    <TextView
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="18dp"
-        android:text="你有什么想问的吗" />
-    <TextView
-        android:id="@+id/answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="40dp"
-       />
 
 </LinearLayout>

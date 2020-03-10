@@ -4,10 +4,15 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="转轮抽奖" />
+        android:title="转轮" />
 
     <item
         android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="单选" />
+
+    <item
+        android:id="@+id/navigation_two"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="答案之书" />
 

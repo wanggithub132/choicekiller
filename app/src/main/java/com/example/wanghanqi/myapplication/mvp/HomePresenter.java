@@ -13,7 +13,7 @@ public class HomePresenter implements HomeConstant.Presenter {
     private HomeConstant.HomeView mView;
 
     public HomePresenter(HomeConstant.HomeView view) {
-        mView =view;
+        mView = view;
 
     }
 
@@ -25,10 +25,7 @@ public class HomePresenter implements HomeConstant.Presenter {
             @Override
             public void run() {
                 final List<ChoiceBean> historyList = DbManager.getsInstance().findHistoryBean();
-                VLog.d("1111");
-                if (historyList == null || historyList.size() <= 0) {
-                    VLog.d("222");
-                } else {
+                if (historyList != null && historyList.size() > 0) {
                     for (ChoiceBean b : historyList)
                         VLog.d(b.toString());
 
@@ -44,9 +41,6 @@ public class HomePresenter implements HomeConstant.Presenter {
                 }
 
 
-
-
-
             }
         });
     }
@@ -57,23 +51,26 @@ public class HomePresenter implements HomeConstant.Presenter {
         ThreadUtils.getsInstance().execute(new Runnable() {
             @Override
             public void run() {
-
-                ChoiceBean latest = DbManager.getsInstance().findLatestBean();
-                if(latest!= null) {
-                    VLog.d("latest" + latest.toString());
-                }else{
-                    latest = Constance.sFoodBean;
-                }
-                final ChoiceBean finalLatest = latest;
-//                MainThreadUtils.postMainThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-                        if (mView != null) {
-                            mView.updateLatestList(finalLatest);
+                try {
+                    ChoiceBean latest = DbManager.getsInstance().findLatestBean();
+                    if (latest != null) {
+                        VLog.d("latest" + latest.toString());
+                    } else {
+                        latest = Constance.sFoodBean;
+                        DbManager.getsInstance().inster(latest);
+                    }
+                    final ChoiceBean finalLatest = latest;
+                    MainThreadUtils.postMainThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mView != null) {
+                                mView.updateLatestList(finalLatest);
+                            }
                         }
-//                    }
-//                });
+                    });
+                } catch (Exception e) {
 
+                }
 
 
             }

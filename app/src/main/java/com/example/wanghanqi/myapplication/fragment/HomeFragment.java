@@ -40,6 +40,7 @@ import java.util.List;
 
 public class HomeFragment extends BaseFragment implements HomeConstant.HomeView {
     private LuckPan pan;
+    private TextView pan_title;
     private ImageView imgStart;
     private Button mEditBtn;
     private Button mAddBtn;
@@ -70,6 +71,7 @@ public class HomeFragment extends BaseFragment implements HomeConstant.HomeView 
         mEditBtn = root.findViewById(R.id.btn_edit);
         mAddBtn = root.findViewById(R.id.btn_add);
         pan = (LuckPan) root.findViewById(R.id.pan);
+        pan_title = root.findViewById(R.id.pan_title);
         imgStart = (ImageView) root.findViewById(R.id.img_start);
         //显示最后一次数据的转盘
         mEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -153,9 +155,10 @@ public class HomeFragment extends BaseFragment implements HomeConstant.HomeView 
 
             ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(DpPxUtils.dip2px(mActivity,100), ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(params);
-            view.setPadding(15,15,15,15);
             view.setText(bean.getTitle());
             view.setMaxLines(1);
+            view.setMinWidth(DpPxUtils.dip2px(mActivity,0));
+            view.setMinHeight(DpPxUtils.dip2px(mActivity,0));
             view.setBackground(getResources().getDrawable(R.drawable.common_button_selector));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,8 +178,11 @@ public class HomeFragment extends BaseFragment implements HomeConstant.HomeView 
     }
 
     private void refreshPan(ChoiceBean bean) {
-        if (bean != null && bean.getmChoiceList() != null && bean.getmChoiceList().size() != 0) {
+        if (bean != null && bean.isValued()) {
             pan.setItems(bean);
+            pan_title.setText("标题："+bean.getTitle());
+
+
         }
     }
 }
