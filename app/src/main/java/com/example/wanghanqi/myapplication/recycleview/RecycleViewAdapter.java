@@ -1,24 +1,17 @@
 package com.example.wanghanqi.myapplication.recycleview;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.wanghanqi.myapplication.AddActivity;
 import com.example.wanghanqi.myapplication.R;
 import com.example.wanghanqi.myapplication.bean.ChoiceBean;
-import com.example.wanghanqi.myapplication.db.DbManager;
-import com.example.wanghanqi.myapplication.fragment.HomeFragment;
-import com.example.wanghanqi.myapplication.utils.ThreadUtils;
 import com.example.wanghanqi.myapplication.utils.VLog;
-
-import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * Created by wanghanqi on 2020/2/6.
@@ -27,15 +20,15 @@ import static android.app.Activity.RESULT_CANCELED;
 public class RecycleViewAdapter extends RecyclerView.Adapter {
     private static final int TITLE_TYPE = 1;
     private static final int CONTENT_TYPE = 2;
-    private static final int FOOTER_TYPE = 3;
-    private Activity mActivity;
 
     private int mType;
 
     private ChoiceBean mData = new ChoiceBean();
 
-    public RecycleViewAdapter(Activity activity) {
-        mActivity = activity;
+    private ChoiceBean mTempDate = new ChoiceBean();
+
+    public RecycleViewAdapter() {
+
     }
 
     private View.OnClickListener mTitleListener = new View.OnClickListener() {
@@ -43,7 +36,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             VLog.d("", "新增条目");
             mData.getmChoiceList().add("");
-
+            VLog.d( mData.getmChoiceList().toString());
             notifyDataSetChanged();
         }
     };
@@ -53,8 +46,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
             bean = new ChoiceBean();
         }
         mData = bean;
+        mTempDate = bean;
         mType = type;
         notifyDataSetChanged();
+    }
+
+    public ChoiceBean getData(){
+        return mData;
     }
 
 
@@ -78,7 +76,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                             mData.getmChoiceList().remove(pos - 1);
                         }
                     }
-                    notifyDataSetChanged();
                 }
             }, new OnEditListenrt() {
                 @Override
@@ -90,50 +87,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-        } else if (viewType == FOOTER_TYPE) {
-            View view = View.inflate(parent.getContext(), R.layout.recycle_holder_footer, null);
-            return new FooterHolder(view, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //确认按钮监听
-                    //数据校验
-                    String[] result = new String[1];
-                    if (mData == null || !mData.isValued(result)) {
-                        Toast.makeText(mActivity, result[0], Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    VLog.d("回传数据", mData.toString());
-                    //数据保存
-                    ThreadUtils.getsInstance().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            //来自新增的数据
-                            if(mType ==0) {
-                                DbManager.getsInstance().inster(mData);
-                            }
-                            //来自编辑的数据
-                            if(mType ==1) {
-                                DbManager.getsInstance().updateItem(mData);
-                            }
-                        }
-                    });
-
-                    Intent i = new Intent();
-                    i.putExtra(AddActivity.RESULT_FLAG, mData.getTitle());
-                    mActivity.setResult(HomeFragment.ADD_ACTIVITY_RESULT, i);
-                    mActivity.finish();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //取消按钮监听
-                    mActivity.setResult(RESULT_CANCELED);
-                    mActivity.finish();
-
-                }
-            });
         }
-
         return null;
     }
 
@@ -144,8 +98,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
             ((TitleHolder) holder).onBind(mData);
         } else if (getItemViewType(position) == CONTENT_TYPE) {
             ((ContentHolder) holder).onBind(mData, position);
-        } else if (getItemViewType(position) == FOOTER_TYPE) {
-            ((FooterHolder) holder).onBind(mData);
         }
 
 
@@ -162,15 +114,13 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
         if (mData != null && mData.getmChoiceList() != null) {
             listSize = mData.getmChoiceList().size();
         }
-        return 1 + 1 + listSize;
+        return 1  + listSize;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TITLE_TYPE;
-        } else if (position == getItemCount() - 1) {
-            return FOOTER_TYPE;
         } else {
             return CONTENT_TYPE;
         }
@@ -182,26 +132,26 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
     static class TitleHolder extends RecyclerView.ViewHolder {
         private EditText mTitle;
         private ImageView mAddBtn;
-        private Button mEditBtn;
 
         public TitleHolder(View itemView, View.OnClickListener listener, final OnEditListenrt editListenrt) {
             super(itemView);
             mTitle = itemView.findViewById(R.id.holder_title);
-            mTitle.setEnabled(false);//设置不可编辑
             mAddBtn = itemView.findViewById(R.id.holder_title_btn_add);
             mAddBtn.setOnClickListener(listener);
-            mEditBtn = itemView.findViewById(R.id.holder_title_btn_edit);
-            mEditBtn.setOnClickListener(new View.OnClickListener() {
+            mTitle.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onClick(View v) {
-                    mTitle.setEnabled(!mTitle.isEnabled());
-                    if (mTitle.isEnabled()) {
-                        mEditBtn.setText("保存");
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    } else {
-                        mEditBtn.setText("编辑");
-                        editListenrt.onClick(0, mTitle.getText().toString());
-                    }
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    editListenrt.onClick(0, mTitle.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
                 }
             });
         }
@@ -211,13 +161,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
                 return;
             }
             mTitle.setText(bean.getTitle());
-            if (mTitle.isEnabled()) {
-                mEditBtn.setText("保存");
-            } else {
-                mEditBtn.setText("编辑");
-            }
-
-
         }
     }
 
@@ -226,7 +169,6 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
      */
     static class ContentHolder extends RecyclerView.ViewHolder {
         private EditText mContent;
-        private Button mEditBtn;
         private ImageView mDelBtn;
 
         private OnDelClickListener mDelListener;
@@ -234,67 +176,46 @@ public class RecycleViewAdapter extends RecyclerView.Adapter {
 
         public ContentHolder(View itemView, OnDelClickListener listener, OnEditListenrt listener2) {
             super(itemView);
+            setIsRecyclable(false);
             mDelListener = listener;
             mEditListener = listener2;
             mContent = itemView.findViewById(R.id.holder_content);
-            mContent.setEnabled(false);//设置不可编辑
-            mEditBtn = itemView.findViewById(R.id.holder_btn_edit);
             mDelBtn = itemView.findViewById(R.id.holder_btn_del);
 
 
         }
 
         public void onBind(ChoiceBean bean, final int pos) {
+            mContent.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    mEditListener.onClick(pos, s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
             if (bean != null && bean.getmChoiceList() != null) {
                 if (pos - 1 <= bean.getmChoiceList().size()) {
                     mContent.setText(bean.getmChoiceList().get(pos - 1));
                 }
             }
-            if (mContent.isEnabled()) {
-                mEditBtn.setText("保存");
-            } else {
-                mEditBtn.setText("编辑");
-            }
+
             mDelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDelListener.onClick(pos, v);
                 }
             });
-            mEditBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mContent.setEnabled(!mContent.isEnabled());
-                    if (mContent.isEnabled()) {
-                        mEditBtn.setText("保存");
-
-                    } else {
-                        mEditBtn.setText("编辑");
-                        mEditListener.onClick(pos, mContent.getText().toString());
-                    }
-                }
-            });
 
 
-        }
-    }
-
-    /**
-     * 弹窗底部选择按钮holder
-     */
-    static class FooterHolder extends RecyclerView.ViewHolder {
-        private Button mOkBtn;
-        private Button mCancelBtn;
-
-        public FooterHolder(View itemView, View.OnClickListener okListener, View.OnClickListener canListener) {
-            super(itemView);
-            mOkBtn = itemView.findViewById(R.id.holder_footer_btn_ok);
-            mOkBtn.setOnClickListener(okListener);
-            mCancelBtn = itemView.findViewById(R.id.holder_footer_btn_cancel);
-            mCancelBtn.setOnClickListener(canListener);
-        }
-
-        public void onBind(ChoiceBean bean) {
 
 
         }

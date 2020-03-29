@@ -62,11 +62,13 @@ public class CommonTitleView extends RelativeLayout {
 
     //左边图片点击事件
     public void setLeftIconOnClickListener(OnClickListener l){
+        ivBack.setVisibility(VISIBLE);
         ivBack.setOnClickListener(l);
     }
 
     //右边图片点击事件
     public void setRightIconOnClickListener(OnClickListener l){
+        ivMore.setVisibility(VISIBLE);
         ivMore.setOnClickListener(l);
     }
 
