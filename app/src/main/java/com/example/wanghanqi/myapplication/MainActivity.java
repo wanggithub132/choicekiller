@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.baidu.mobstat.StatService;
 import com.example.wanghanqi.myapplication.fragment.AnswerFragment;
 import com.example.wanghanqi.myapplication.fragment.BaseFragment;
 import com.example.wanghanqi.myapplication.fragment.HomeFragment;
@@ -56,6 +57,20 @@ public class MainActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 页面埋点，需要使用Activity的引用，以便代码能够统计到具体页面名
+        StatService.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 页面结束埋点，需要使用Activity的引用，以便代码能够统计到具体页面名
+        StatService.onPause(this);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
