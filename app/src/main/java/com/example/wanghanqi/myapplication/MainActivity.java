@@ -59,19 +59,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // 页面埋点，需要使用Activity的引用，以便代码能够统计到具体页面名
-        StatService.onResume(this);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // 页面结束埋点，需要使用Activity的引用，以便代码能够统计到具体页面名
-        StatService.onPause(this);
-    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
