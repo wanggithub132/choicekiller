@@ -75,6 +75,7 @@ public class AddActivity extends BaseActivity {
             }
         });
 
+        mCommonTitleView.setRightImage(R.drawable.chose_ok);
         mCommonTitleView.setRightIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
